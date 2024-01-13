@@ -401,6 +401,14 @@ static __always_inline bool bpf_getsockname(struct socket *sock,
 
 		break;
 	}
+	case AF_NETLINK:
+	{	
+		// TODO
+		struct netlink_sock *netlink = (struct netlink_sock *)sk;
+		struct sockaddr_nl *netlink_addr = (struct sockaddr_nl *)usrsockaddr;
+
+		netlink_addr->nl_family = AF_NETLINK
+	}
 	default:
 		return false;
 	}
@@ -618,6 +626,7 @@ static __always_inline uint16_t bpf_pack_addr(struct filler_data *data,
 	struct sockaddr_in *usrsockaddr_in;
 	struct sockaddr_in6 *usrsockaddr_in6;
 	struct sockaddr_un *usrsockaddr_un;
+	struct sockaddr_nl *usrsockaddr_nl;
 	uint16_t size;
 	char *dest;
 	int res;
@@ -694,6 +703,24 @@ static __always_inline uint16_t bpf_pack_addr(struct filler_data *data,
 				       UNIX_PATH_MAX);
 
 		size += res;
+
+		break;
+	case AF_NETLINK:
+		/*
+		 * Map the user-provided address to a sockaddr_in
+		 */
+		usrsockaddr_nl = (struct sockaddr_nl *)usrsockaddr;
+
+		/*
+		 * Pack the tuple info in the temporary buffer
+		 */
+		size = 1 + 4 + 4; /* family + nl_pid + nl_groups */
+		
+		data->buf[data->state->tail_ctx.curoff & SCRATCH_SIZE_HALF] = socket_family_to_scap(family);
+		memcpy(&data->buf[(data->state->tail_ctx.curoff + 1) & SCRATCH_SIZE_HALF],
+		       &usrsockaddr_nl->nl_pid, 4);
+		memcpy(&data->buf[(data->state->tail_ctx.curoff + 5) & SCRATCH_SIZE_HALF],
+		       &usrsockaddr_nl->nl_groups, 4);
 
 		break;
 	default:
@@ -937,6 +964,10 @@ static __always_inline long bpf_fd_to_socktuple(struct filler_data *data,
 		size += res;
 
 		break;
+	}
+	case AF_NETLINK:
+	{
+		// TODO
 	}
 	}
 

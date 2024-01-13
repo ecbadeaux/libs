@@ -593,6 +593,12 @@ static inline size_t pack_addr_port(sockaddr *sa, char *targetbuf)
 			size_t len = strlcpy(targetbuf, sa_un->sun_path, UNIX_PATH_MAX);
 			size = len + 1;
 		}
+
+		case AF_NETLINK:
+		{
+			// TODO
+		}
+
 		break;
 	}
 
@@ -622,6 +628,12 @@ static inline size_t pack_sock_family(sockaddr *sa, char *targetbuf)
 		{
 			sockaddr_un *sa_un = (sockaddr_un *)sa;
 			sock_family = socket_family_to_scap(sa_un->sun_family);
+		}
+
+		case AF_NETLINK:
+		{
+			sockaddr_nl *sa_nl = (sockaddr_nl *)sa;
+			sock_family = socket_family_to_scap(sa_nl->nl_family);
 		}
 		break;
 	}
@@ -666,6 +678,16 @@ static size_t pack_sockaddr_to_remote_tuple(sockaddr *sa, char *targetbuf)
 			memset(targetbuf + 1, 0, sizeof(uint64_t)); // TODO: understand how to fill this
 			memset(targetbuf + 1 + 8, 0, sizeof(uint64_t));
 			size += sizeof(uint64_t) + sizeof(uint64_t);
+			buf = targetbuf + size;
+			size += pack_addr_port(sa, buf);
+		}
+
+		case AF_NETLINK:
+		{
+			size += pack_sock_family(sa, buf);
+			memset(targetbuf + 1, 0, sizeof(int32_t)); // nl_pid
+			memset(targetbuf + 5, 0, sizeof(uint32_t)); // nl_groups
+			size += sizeof(int32_t) + sizeof(uint32_t);
 			buf = targetbuf + size;
 			size += pack_addr_port(sa, buf);
 		}

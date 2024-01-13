@@ -1162,6 +1162,10 @@ const char* sinsp_evt::get_param_as_str(uint32_t id, OUT const char** resolved_s
 				         "INVALID IPv6");
 			}
 		}
+		else if(sockfamily == PPM_AF_NETLINK)
+		{
+			// TODO
+		}
 		else
 		{
 			snprintf(&m_paramstr_storage[0],
@@ -1267,6 +1271,10 @@ const char* sinsp_evt::get_param_as_str(uint32_t id, OUT const char** resolved_s
 				src,
 				dst,
 				sanitized_str.c_str());
+		}
+		else if(sockfamily == AF_NETLINK)
+		{
+			// TODO
 		}
 		else
 		{

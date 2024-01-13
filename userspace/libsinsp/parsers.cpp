@@ -3495,6 +3495,10 @@ void sinsp_parser::parse_accept_exit(sinsp_evt *evt)
 		fdi.m_type = SCAP_FD_UNIX_SOCK;
 		fdi.set_unix_info(packed_data);
 	}
+	else if(*packed_data == PPM_AF_NETLINK)
+	{
+		// TODO
+	}
 	else
 	{
 		//
@@ -3985,6 +3989,10 @@ bool sinsp_parser::update_fd(sinsp_evt *evt, const sinsp_evt_param *parinfo)
 		evt->m_fdinfo->m_name = ((char*)packed_data) + 17;
 
 		return true;
+	}
+	else if(family == PPM_AF_NETLINK)
+	{
+		// TODO
 	}
 
 	//

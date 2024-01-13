@@ -572,7 +572,7 @@ TEST(SyscallExit, recvmsg_ancillary_data)
 		/* Create a socket. It is used to pass it to the child process, just for test purposes */
 		int sock = socket(AF_UNIX, SOCK_STREAM, 0);
 		msg = {
-			.msg_iov = &iov,
+			.msg_iov = &iov,K
 			.msg_iovlen = 1,
 			.msg_control = cmsg_buf,
 			.msg_controllen = sizeof(cmsg_buf)

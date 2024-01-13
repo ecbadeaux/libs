@@ -150,6 +150,11 @@ TEST(SyscallExit, bindX_UNIX)
 }
 #endif /* __NR_unlinkat */
 
+TEST(SyscallExit, bindX_NETLINK)
+{
+	// TODO
+}
+
 TEST(SyscallExit, bindX_failure)
 {
 	auto evt_test = get_syscall_event_test(__NR_bind, EXIT_EVENT);

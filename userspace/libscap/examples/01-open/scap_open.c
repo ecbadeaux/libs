@@ -415,6 +415,10 @@ void print_parameter(int16_t num_param)
 			/* unix_path. */
 			print_unix_path(1);
 			break;
+		
+		case PPM_AF_NETLINK:
+			// to do
+			break;
 
 		default:
 			printf("-  error\n");
@@ -467,6 +471,11 @@ void print_parameter(int16_t num_param)
 			/* unix_path. */
 			print_unix_path(17);
 			break;
+
+		case PPM_AF_NETLINK:
+			// todo
+			break;
+
 
 		default:
 			printf("-  error\n");

@@ -375,6 +375,16 @@ void event_test::server_fill_sockaddr_un(struct sockaddr_un* sockaddr, const cha
 	strlcpy(sockaddr->sun_path, unix_path, MAX_SUN_PATH);
 }
 
+void event_test::client_fill_sockaddr_nl(struct sockaddr_nl* sockaddr, const char* unix_path)
+{
+	// TODO
+}
+
+void event_test::server_fill_sockaddr_nl(struct sockaddr_nl* sockaddr, const char* unix_path)
+{
+	// TODO
+}
+
 void event_test::connect_ipv4_client_to_server(int32_t* client_socket, struct sockaddr_in* client_sockaddr, int32_t* server_socket, struct sockaddr_in* server_sockaddr, int32_t port_client, int32_t port_server)
 {
 	/* Create the server socket. */
@@ -481,6 +491,11 @@ void event_test::connect_unix_client_to_server(int32_t* client_socket, struct so
 	/* We need to bind the client socket with an address otherwise we cannot assert against it. */
 	assert_syscall_state(SYSCALL_SUCCESS, "bind (client)", syscall(__NR_bind, *client_socket, (struct sockaddr*)client_sockaddr, sizeof(*client_sockaddr)), NOT_EQUAL, -1);
 	assert_syscall_state(SYSCALL_SUCCESS, "connect (client)", syscall(__NR_connect, *client_socket, (struct sockaddr*)server_sockaddr, sizeof(*server_sockaddr)), NOT_EQUAL, -1);
+}
+
+void event_test::connect_netlink_client_to_server(int32_t* client_socket, struct sockaddr_un* client_sockaddr, int32_t* server_socket, struct sockaddr_un* server_sockaddr)
+{
+	// TODO
 }
 
 /////////////////////////////////

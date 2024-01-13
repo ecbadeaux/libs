@@ -19,6 +19,7 @@ or GPL2.txt for full copies of the license.
 #include <net/ipv6.h>
 #include <linux/ip.h>
 #include <linux/ipv6.h>
+#include <linux/netlink.h>
 #include <linux/tcp.h>
 #include <linux/udp.h>
 #include <linux/file.h>
@@ -270,6 +271,10 @@ inline int sock_getname(struct socket* sock, struct sockaddr* sock_address, int 
 			memcpy(sunaddr, u_addr->name, len);
 		}
 		break;
+	}
+	case AF_NETLINK:
+	{
+		// TODO
 	}
 
 	default:
@@ -962,6 +967,7 @@ uint16_t pack_addr(struct sockaddr *usrsockaddr,
 	struct sockaddr_in *usrsockaddr_in;
 	struct sockaddr_in6 *usrsockaddr_in6;
 	struct sockaddr_un *usrsockaddr_un;
+	struct sockaddr_nl *usrsockaddr_nl;
 	uint16_t size;
 	char *dest;
 
@@ -1039,6 +1045,23 @@ uint16_t pack_addr(struct sockaddr *usrsockaddr,
 		size += (uint16_t)strlen(dest) + 1;
 
 		break;
+	case AF_NETLINK:
+		/*
+		 * Map the user-provided address to a sockaddr_in
+		 */
+		usrsockaddr_nl = (struct sockaddr_nl *)usrsockaddr;
+
+		/*
+		 * Pack the tuple info in the temporary buffer
+		 */
+		size = 1 + 4 + 4; /* family + nl_pid + nl_groups */
+		
+		*targetbuf = socket_family_to_scap((uint8_t) family);
+		memcpy(targetbuf + 1, &usrsockaddr_nl->nl_pid, 4);
+		memcpy(targetbuf + 5, &usrsockaddr_nl->nl_groups, 4);
+
+		break;
+
 	default:
 		size = 0;
 		break;
@@ -1297,6 +1320,8 @@ uint16_t fd_to_socktuple(int fd,
 
 		size += strlen(dest) + 1;
 		break;
+	case AF_NETLINK:
+		// TODO
 	default:
 		size = 0;
 		break;

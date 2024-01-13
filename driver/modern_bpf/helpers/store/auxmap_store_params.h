@@ -540,6 +540,11 @@ static __always_inline void auxmap__store_sockaddr_param(struct auxiliary_map *a
 		break;
 	}
 
+	case AF_NETLINK:
+	{
+		// TODO
+	}
+
 	default:
 		final_param_len = 0;
 		break;
@@ -698,6 +703,11 @@ static __always_inline void auxmap__store_socktuple_param(struct auxiliary_map *
 		uint16_t written_bytes = push__charbuf(auxmap->data, &auxmap->payload_pos, start_reading_point, MAX_UNIX_SOCKET_PATH, KERNEL);
 		final_param_len = FAMILY_SIZE + KERNEL_POINTER + KERNEL_POINTER + written_bytes;
 		break;
+	}
+
+	case AF_NETLINK
+	{
+		// TODO
 	}
 
 	default:

@@ -192,6 +192,11 @@ TEST(SyscallExit, connectX_UNIX)
 }
 #endif /* __NR_unlinkat */
 
+TEST(SyscallExit, connectX_NETLINK)
+{
+	// TODO
+}
+
 TEST(SyscallExit, connectX_failure)
 {
 	auto evt_test = get_syscall_event_test(__NR_connect, EXIT_EVENT);

@@ -158,6 +158,11 @@ TEST(SyscallEnter, connectE_UNIX)
 	evt_test->assert_num_params_pushed(2);
 }
 
+TEST(SyscallEnter, connectE_NETLINK)
+{
+	// TODO
+}
+
 /* This is 109 chars long, so no null terminator will be put inside the `sun_path` during the socket call.
  * The BPF prog can read at most `108` chars so instead of the `*`, it will put the `\0`.
  */

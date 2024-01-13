@@ -595,6 +595,11 @@ TEST(SyscallExit, socketcall_acceptX_UNIX)
 }
 #endif /* __NR_unlinkat */
 
+Test(SyscallExit, socketcall_acceptX_NETLINK)
+{
+	// TODO
+}
+
 TEST(SyscallExit, socketcall_acceptX_failure)
 {
 #ifdef __s390x__
@@ -896,6 +901,12 @@ TEST(SyscallExit, socketcall_accept4X_UNIX)
 	evt_test->assert_num_params_pushed(5);
 }
 #endif /* __NR_unlinkat */
+
+TEST(SyscallExit, socketcall_accept4X_NETLINK)
+{
+	// TODO
+}
+
 
 TEST(SyscallExit, socketcall_accept4X_failure)
 {

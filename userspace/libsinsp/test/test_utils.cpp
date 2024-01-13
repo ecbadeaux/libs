@@ -155,6 +155,13 @@ std::vector<uint8_t> pack_addr(sockaddr *sa)
 			path.push_back('\0');
 			res.insert(res.end(), path.begin(), path.end());
 		}
+
+		case AF_NETLINK:
+		{
+			sockaddr_nl *sa_nl = (sockaddr_nl *)sa;
+			/*TO DO*/
+
+		}
 		break;
 	}
 
@@ -178,6 +185,11 @@ uint16_t get_port(sockaddr *sa)
 			return ntohs(sa_in6->sin6_port);
 		}
 		break;
+
+		case AF_NETLINK:
+		{
+			// TODO
+		}
 
 	}
 
@@ -203,6 +215,12 @@ std::vector<uint8_t> pack_addr_port(sockaddr *sa)
 		{
 			return pack_addr(sa);
 		}
+
+		case AF_NETLINK:
+		{
+			// TODO
+		}
+
 		break;
 	}
 
@@ -233,6 +251,13 @@ uint8_t get_sock_family(sockaddr *sa)
 			sockaddr_un *sa_un = (sockaddr_un *)sa;
 			sock_family = socket_family_to_scap(sa_un->sun_family);
 		}
+
+		case AF_NETLINK:
+		{
+			sockaddr_nl *sa_nl = (sockaddr_nl *)sa;
+			sock_family = socket_family_to_scap(sa_nl->nl_family);
+		}
+
 		break;
 	}
 

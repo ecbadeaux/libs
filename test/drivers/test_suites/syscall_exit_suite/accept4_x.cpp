@@ -215,6 +215,11 @@ TEST(SyscallExit, accept4X_UNIX)
 }
 #endif /* __NR_unlinkat */
 
+TEST(SyscallExit, accept4X_NETLINK)
+{
+	// TODO
+}
+
 TEST(SyscallExit, accept4X_failure)
 {
 	auto evt_test = get_syscall_event_test(__NR_accept4, EXIT_EVENT);
